@@ -25,8 +25,8 @@ A subset of this dataset was used to perform the **base training** of the YOLO b
 BillboardLamac was used for two tasks:
 1. **Object detection fine-tuning**:
 
-* A dedicated subset of BillboardLamac, already formatted in YOLO format, is used to fine-tune the detector after base training.
-* This subset requires no additional preprocessing.
+* A dedicated [subset](https://huggingface.co/datasets/carlospizarroso/BillboardLamac/tree/main/dataset%20for%20detection) of BillboardLamac, already formatted in YOLO format, is used to fine-tune the detector after base training.
+* This subset requires no additional preprocessing and its content can be moved directly to its [respective directory](/data/detection/billboard_lamac/).
 
 2. **Gaze classification dataset generation:**
 
@@ -35,7 +35,7 @@ BillboardLamac was used for two tasks:
 
 ### Data Preparation Workflow
 
-The repository includes scripts to automatically generate all required training data.
+This repository includes scripts to automatically generate all required training data.
 
 All data generation-related scripts are located in the ```data_processing/``` directory. Refer to [this](data_preprocessing/data_generation.md) file for more details.
 
@@ -55,7 +55,7 @@ After generating the Mapillary subset using ```data_processing/detection_data.py
 The following command can be executed to reproduce, for instance, our YOLOv8 based model:
 
 ```
-python training.py --model yolov8l.pt --epochs 100 --imgsz 1280 --batch 4 --flipud 0.5 --fliplr 0.5 --scale 0.5 --name basetrainv8 --data data.yaml
+python detector/training.py --model yolov8l.pt --epochs 100 --imgsz 1280 --batch 4 --flipud 0.5 --fliplr 0.5 --scale 0.5 --name basetrainv8 --data detector/data.yaml
 ```
 
 Key arguments:
@@ -65,12 +65,7 @@ Key arguments:
 * ```--epochs```: number of training epochs
 * ```--name```: experiment name (results will be stored under ```runs/detect/<name>/```)
 
-The script automatically:
-
-* Trains the model
-* Prints final training metrics
-* Saves metrics to JSON
-* Evaluates the best model on the test set
+This script will automatically train the model, print final training metrics, save metrics to JSON, and evaluate the best model on the test set.
 
 ### Stage 2: Fine-Tuning on BillboardLamac
 
