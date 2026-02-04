@@ -54,7 +54,9 @@ After generating the Mapillary subset using ```data_processing/detection_data.py
 
 The following command can be executed to reproduce, for instance, our YOLOv8 based model:
 
-```python training.py --model yolov8l.pt --epochs 100 --imgsz 1280 --batch 4 --flipud 0.5 --fliplr 0.5 --scale 0.5 --name basetrainv8 --data data.yaml```
+```
+python training.py --model yolov8l.pt --epochs 100 --imgsz 1280 --batch 4 --flipud 0.5 --fliplr 0.5 --scale 0.5 --name basetrainv8 --data data.yaml
+```
 
 Key arguments:
 
@@ -76,7 +78,9 @@ Once the base training is completed, the best model can be fine-tuned using the 
 
 For instance, using the YOLOv8 from the previous example, the following command can be executed to fine-tune it:
 
-``` python training.py --model .../runs/detect/<name>/weights/best.pt --epochs 100 --imgsz 1280 --batch 6 --name finetune_v8 --data lamac.yaml```
+``` 
+python training.py --model .../runs/detect/<name>/weights/best.pt --epochs 100 --imgsz 1280 --batch 6 --name finetune_v8 --data lamac.yaml
+```
 
 This stage adapts the detector specifically to billboard imagery and yields the final detection model used in the paper.
 
@@ -86,7 +90,9 @@ Trained models can be evaluated independently using: ```detector/evaluation.py``
 
 For instance:
 
-```python evaluation.py --model .../runs/detect/finetune_v8/weights/best.pt --data lamac.yaml --split test --output ftv8_eval.json```
+```
+python evaluation.py --model .../runs/detect/finetune_v8/weights/best.pt --data lamac.yaml --split test --output ftv8_eval.json
+```
 
 This script computes:
 
@@ -104,7 +110,9 @@ The trained detector can be used to predict billboards on new images or folders 
 
 For example:
 
-```python inference.py --model .../runs/detect/finetune_v8/weights/best.pt --source ".../any_data/**/*" --conf 0.25 --output full_dataset_inference --run_name all_data --save_json```
+```
+python inference.py --model .../runs/detect/finetune_v8/weights/best.pt --source ".../any_data/**/*" --conf 0.25 --output full_dataset_inference --run_name all_data --save_json
+```
 
 **Available options:**
 

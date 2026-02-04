@@ -107,7 +107,7 @@ def select_billboard_images(mapillary_root, split, size=None):
 
         if has_billboard:
             subset_names.append(image_id)
-            print(image_id)
+            #print(image_id)
 
     return subset_names
 
@@ -147,7 +147,7 @@ def select_non_billboard_images(mapillary_root, split, exclude_list, size):
 
         if not has_billboard:
             nobillboard_names.append(image_id)
-            print(image_id)
+            #print(image_id)
 
     return nobillboard_names
 
@@ -225,7 +225,7 @@ def create_yolo_labels(subset_names, mapillary_root, split, labels_output_path):
 
             img_label = label_dic[category["supercategory"]]
 
-            if img_label != 35:
+            if img_label != 35: # 35 corresponds to the category Billboard in v1
                 continue
 
             box_x_left = segment_info["bbox"][0]
@@ -242,3 +242,12 @@ def create_yolo_labels(subset_names, mapillary_root, split, labels_output_path):
 
         label_doc.close()
         img.close()
+
+# To get test images based on the provided test labels
+
+def get_image_ids_from_labels(labels_path):
+    image_ids = []
+    for file_name in os.listdir(labels_path):
+        if file_name.endswith(".txt"):
+            image_ids.append(file_name.replace(".txt", ""))
+    return sorted(image_ids)

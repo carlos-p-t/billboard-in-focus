@@ -118,7 +118,7 @@ class BillBoardDataset():
 def extract_dino_features(args):
     dataset_path = args.dataset_path
 
-    original_data = np.genfromtxt('data/features_by_mean_v4.csv', delimiter=',', dtype=int, skip_header=1)
+    original_data = np.genfromtxt('data/classification/features_by_mean_v4.csv', delimiter=',', dtype=int, skip_header=1)
     feature_extractor = pipeline("image-feature-extraction", model="facebook/dinov2-small")
 
     gsv_dataset = BillBoardDataset(feature_extractor, args.dataset_path_gsv, 'test', best_frames=100)

@@ -2,6 +2,7 @@ import os
 import random
 import shutil
 import cv2
+import csv
 
 # To extract frames from videos based on ground-truth TXT files and assigns them to one of the 4 original classes using image IDs
 # This function is meant to be run only ONCE to create the raw classification dataset
@@ -90,11 +91,13 @@ def create_output_folders(base_path, subsets, class_names):
 
 # To read ID to class mapping from the ground truth TXT files from the previous work.
 
-def read_id_file(file_path):
+def read_id_csv(csv_path):
     id_dict = {}
-    with open(file_path, "r") as f:
-        for line in f:
-            img_id, class_id = line.strip().split(":")
+    with open(csv_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            img_id = str(row["ref"]).strip()
+            class_id = str(row["class"]).strip()
             id_dict[img_id] = class_id
     return id_dict
 
@@ -108,7 +111,17 @@ def create_train_val_split(train_ids, val_ratio, seed=None):
     random.shuffle(ids)
 
     split_idx = int(len(ids) * (1 - val_ratio))
-    return ids[:split_idx], ids[split_idx:]
+    train_ids = ids[:split_idx]
+    val_ids = ids[split_idx:]
+    return train_ids, val_ids
+
+# To save id splits into txt files for further use
+
+def id_txt(id_list, id_to_class, output_path):
+    with open(output_path, "w") as f:
+        for img_id in sorted(id_list):
+            class_id = id_to_class[img_id]
+            f.write("{}:{}\n".format(img_id, class_id))
 
 # To move the frames to their respective directories
 
